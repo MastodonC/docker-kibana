@@ -11,7 +11,7 @@ ES_URL="${ES_SCHEME:-http}://${ES_PORT_9200_TCP_ADDR}:${ES_PORT_9200_TCP_PORT:-9
 
 echo "Elastic Search URL is ${ES_URL}"
 
-echo <<EOF > ${CONFIG_FILE}
+cat <<EOF > ${CONFIG_FILE}
 port: 5601
 host: "0.0.0.0"
 
@@ -29,9 +29,6 @@ bundled_plugin_ids:
  - plugins/table_vis/index
  - plugins/vis_types/index
  - plugins/visualize/index
-
 EOF
-
-EXPOSE 5601
 
 /kibana/bin/kibana

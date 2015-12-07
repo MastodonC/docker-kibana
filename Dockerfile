@@ -6,6 +6,6 @@ RUN apt-get install -y nginx-full && \
 
 ADD start-kibana.sh /start-kibana
 
-EXPOSE 80
+EXPOSE 5601
 
 CMD ["/bin/bash","/start-kibana"]
