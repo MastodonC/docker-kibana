@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CONFIG_FILE=/kibana/config/kibana.yml
+CONFIG_FILE=/kibana-linux-x64/config/kibana.yml
 
 LOG_DIR="/logs/kibana/${HOSTNAME}"
 mkdir -p "${LOG_DIR}"
@@ -31,4 +31,4 @@ bundled_plugin_ids:
  - plugins/visualize/index
 EOF
 
-/kibana/bin/kibana
+/kibana-linux-x64/bin/kibana
