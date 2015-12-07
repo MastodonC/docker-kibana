@@ -1,5 +1,7 @@
 #!/bin/bash
 
+CONFIG_FILE=/kibana/config/kibana.yml
+
 LOG_DIR="/logs/kibana/${HOSTNAME}"
 mkdir -p "${LOG_DIR}"
 
@@ -9,39 +11,27 @@ ES_URL="${ES_SCHEME:-http}://${ES_PORT_9200_TCP_ADDR}:${ES_PORT_9200_TCP_PORT:-9
 
 echo "Elastic Search URL is ${ES_URL}"
 
-sed -i \
-    -e "s@{{error_log}}@/logs/kibana/${HOSTNAME}/error.log@" \
-    -e "s@{{kibana_access_log}}@/logs/kibana/${HOSTNAME}/access.log@" \
-    -e "s@{{es_access_log}}@/logs/kibana/${HOSTNAME}/es-access.log@" \
-    -e "s@{{es_url}}@${ES_URL}@" \
-    /etc/nginx/nginx.conf
+echo <<EOF > ${CONFIG_FILE}
+port: 5601
+host: "0.0.0.0"
 
-cat << EOF > /kibana/config.js
-define(['settings'],
-function (Settings) {
-  return new Settings({
-    elasticsearch: "http://localhost:8080",
-    default_route: "/dashboard/file/logstash.json",
-    kibana_index: "kibana-int",
-    panel_names: [
-      'histogram',
-      'map',
-      'goal',
-      'table',
-      'filtering',
-      'timepicker',
-      'text',
-      'hits',
-      'column',
-      'trends',
-      'bettermap',
-      'query',
-      'terms',
-      'stats',
-      'sparklines'
-    ]
-  });
-});
+# The Elasticsearch instance to use for all your queries.
+elasticsearch_url: "${ES_URL}"
+
+bundled_plugin_ids:
+ - plugins/dashboard/index
+ - plugins/discover/index
+ - plugins/doc/index
+ - plugins/kibana/index
+ - plugins/markdown_vis/index
+ - plugins/metric_vis/index
+ - plugins/settings/index
+ - plugins/table_vis/index
+ - plugins/vis_types/index
+ - plugins/visualize/index
+
 EOF
 
-nginx -c /etc/nginx/nginx.conf
+EXPOSE 5601
+
+/kibana/bin/kibana

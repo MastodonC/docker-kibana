@@ -1,10 +1,8 @@
 FROM mastodonc/basejava
 
 RUN apt-get install -y nginx-full && \
-    curl -s https://download.elasticsearch.org/kibana/kibana/kibana-3.1.0.tar.gz | \
+    curl -sL https://download.elastic.co/kibana/kibana/kibana-4.1.3-linux-x64.tar.gz | \
     tar -xzf - -C / --transform 's@\([a-z-]*\)-[0-9\.]*@\1@'
-
-ADD nginx.conf /etc/nginx/nginx.conf
 
 ADD start-kibana.sh /start-kibana
 
