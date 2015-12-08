@@ -14,10 +14,13 @@ echo "Elastic Search URL is ${ES_URL}"
 cat <<EOF > ${CONFIG_FILE}
 port: 5601
 host: "0.0.0.0"
-
-# The Elasticsearch instance to use for all your queries.
 elasticsearch_url: "${ES_URL}"
-
+elasticsearch_preserve_host: true
+kibana_index: ".kibana"
+default_app_id: "discover"
+request_timeout: 300000
+shard_timeout: 0
+verify_ssl: false
 bundled_plugin_ids:
  - plugins/dashboard/index
  - plugins/discover/index
